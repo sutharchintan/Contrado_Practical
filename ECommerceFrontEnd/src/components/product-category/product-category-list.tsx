@@ -5,6 +5,7 @@ import { ListRequest, ListResponse, ProductCategoryModel } from '../../models';
 import { TableRow, TableCell, IconButton, withStyles } from '@material-ui/core';
 import { Delete, Edit } from '@material-ui/icons';
 import { tableStyles } from "../../styles/table";
+import DeleteConfirmation from "../layout/delete-confirmation";
 
 interface Props {
     classes: any;
@@ -22,6 +23,8 @@ const ProductCategoryList = (props: Props) => {
     const [recordCount, setRecordCount] = useState(0);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [currentRecord, setRecord] = useState(undefined);
 
     useEffect(() => {
         const request = new ListRequest();
@@ -31,14 +34,14 @@ const ProductCategoryList = (props: Props) => {
     }, [])
 
     const loadListData = async (request) => {
-        if(page !== request.PageNumber) {
+        if (page !== request.PageNumber) {
             setPage(request.PageNumber);
         }
 
-        if(pageSize !== request.PageSize) {
+        if (pageSize !== request.PageSize) {
             setPageSize(request.PageSize);
         }
-        
+
         const result = await props.loadList(request) as ListResponse<ProductCategoryModel>;
         if (result && result.Items && result.Count) {
             setData(result.Items);
@@ -54,9 +57,20 @@ const ProductCategoryList = (props: Props) => {
         }
     }
 
-    const onDelete = async (id) => {
-        await props.delete(id);
-        await loadListData({ PageNumber: page, PageSize: pageSize});
+    const onCloseDelete = () => {
+        setRecord(undefined);
+        setOpenDelete(false);
+    };
+
+    const onOpenDelete = (record: ProductCategoryModel) => {
+        setRecord(record);
+        setOpenDelete(true);
+    };
+
+    const onDelete = async () => {
+        await props.delete(currentRecord.ProdCatId);
+        await loadListData({ PageNumber: page, PageSize: pageSize });
+        onCloseDelete();
     }
 
     const renderEditButton = (dataRecord) => {
@@ -67,6 +81,22 @@ const ProductCategoryList = (props: Props) => {
         )
     }
 
+    const renderDeleteConfirmation = () => {
+        if (openDelete) {
+            return (
+                <DeleteConfirmation
+                    open={openDelete}
+                    title={"Product Category"}
+                    message={currentRecord ? "'" + (currentRecord as ProductCategoryModel).CategoryName + "'" : ""}
+                    onClose={onCloseDelete}
+                    onSubmit={onDelete}
+                />
+            );
+        } else {
+            return null;
+        }
+    };
+
     const renderRows = () => {
         return data && data.length ?
             data.map((dataRecord: ProductCategoryModel, index) =>
@@ -76,7 +106,7 @@ const ProductCategoryList = (props: Props) => {
                             renderEditButton(dataRecord)
                         }
 
-                        <IconButton onClick={(event) => onDelete(dataRecord.ProdCatId)}>
+                        <IconButton onClick={(event) => onOpenDelete(dataRecord)}>
                             <Delete />
                         </IconButton>
                     </TableCell>
@@ -89,15 +119,20 @@ const ProductCategoryList = (props: Props) => {
     }
 
     return (
-        <ListUi
-            columnNames={columnNames}
-            title="Product Category - List"
-            addLink={ComponentRoutes.ProductCategory}
-            totalRecords={recordCount}
-            renderRows={renderRows}
-            loadData={loadListData}
-            classes={props.classes}
-        />
+        <>
+            <ListUi
+                columnNames={columnNames}
+                title="Product Category - List"
+                addLink={ComponentRoutes.ProductCategory}
+                totalRecords={recordCount}
+                renderRows={renderRows}
+                loadData={loadListData}
+                classes={props.classes}
+            />
+            {
+                renderDeleteConfirmation()
+            }
+        </>
     )
 }
 
