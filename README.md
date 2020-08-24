@@ -12,5 +12,6 @@
 3. Front End App -> ECommerce Front End (React application)
 - Open "EcommerceFrontEnd" folder, open path in command prompt
 - Run "npm install" command
+- In the project directory, Open "src\config\api-routes.ts" check the api end point, replace with Ecommerce Api Endpoint.
 - After success of packages install, run "npm start" command.
 - Application should start with Product page.
