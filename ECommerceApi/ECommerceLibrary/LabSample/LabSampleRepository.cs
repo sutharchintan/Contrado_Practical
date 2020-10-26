@@ -81,5 +81,15 @@ namespace ECommerceLibrary.LabSample
 
                      });
         }
+
+        public List<ECommerceModels.LabSample.LabSample> ViewSamples(int userId, string roleName)
+        {
+            return this.databaseService.RecordList<ECommerceModels.LabSample.LabSample>(LabSampleConstants.ViewList,
+                     new
+                     {
+                         @UserId = userId,
+                         @RoleName = roleName,
+                     });
+        }
     }
 }

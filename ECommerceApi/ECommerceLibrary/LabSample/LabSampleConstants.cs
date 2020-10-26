@@ -1,27 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ECommerceLibrary.LabSample
+﻿namespace ECommerceLibrary.LabSample
 {
     public class LabSampleConstants
     {
         /// <summary>
-        /// constant to get product list
+        /// constant to get sample list
         /// </summary>
         public const string List = "usp_Lab_Sample_Traking_Get";
         
         /// <summary>
-        /// constant to add product
+        /// constant to add sample
         /// </summary>
         public const string Add = "usp_Lab_Sample_Traking_Insert";
 
         /// <summary>
-        /// constant to update product
+        /// constant to update sample
         /// </summary>
         public const string Update = "usp_Lab_Sample_Traking_Update";
+
+        /// <summary>
+        /// constant to view sample list
+        /// </summary>
+        public const string ViewList = "usp_Lab_Sample_Traking_View";
 
     }
 }

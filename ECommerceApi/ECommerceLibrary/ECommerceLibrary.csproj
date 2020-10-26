@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\Login.cs" />
     <Compile Include="BaseRepository.cs" />
     <Compile Include="Constants\ConfigurationConstants.cs" />
     <Compile Include="Database\IDatabaseService.cs" />
@@ -56,6 +57,10 @@
     <Compile Include="Database\SqlService.cs" />
     <Compile Include="Exceptions\ExeceptionLogger.cs" />
     <Compile Include="ILogger.cs" />
+    <Compile Include="LabSample\LabSampleConstants.cs" />
+    <Compile Include="LabSample\LabSampleRepository.cs" />
+    <Compile Include="Login\LoginConstants.cs" />
+    <Compile Include="Login\LoginRepository.cs" />
     <Compile Include="Product\ProductAttributeConstants.cs" />
     <Compile Include="Product\ProductAttributeLookupConstants.cs" />
     <Compile Include="Product\ProductCategoryConstants.cs" />

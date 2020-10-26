@@ -45,6 +45,8 @@
     <Compile Include="DeleteRequest.cs" />
     <Compile Include="DropDownModel.cs" />
     <Compile Include="Exception\ExceptionModel.cs" />
+    <Compile Include="LabSample\LabSample.cs" />
+    <Compile Include="LabSample\LabSampleRequest.cs" />
     <Compile Include="ListRequest.cs" />
     <Compile Include="ListResponse.cs" />
     <Compile Include="Product\Product.cs" />

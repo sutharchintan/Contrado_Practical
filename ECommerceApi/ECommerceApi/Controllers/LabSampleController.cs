@@ -3,6 +3,7 @@ using ECommerceLibrary;
 using ECommerceLibrary.Database;
 using ECommerceLibrary.LabSample;
 using ECommerceModels;
+using ECommerceModels.LabSample;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,17 +31,32 @@ namespace ECommerceApi.Controllers
         /// <param name="request">the list request</param>
         /// <returns>the list of labsample models</returns>
         [HttpPost]
-        public ApiResult<ListResponse<ECommerceModels.LabSample.LabSample>> GetProducts(int userId, string roleName)
+        public ApiResult<ListResponse<LabSample>> GetSamples(LabSampleRequest request)
         {
             try
             {
-                var result = this.labSampleRepository.GetLabSample(userId, roleName);
-                return ApiResult<ListResponse<ECommerceModels.LabSample.LabSample>>
-                    .Success(new ListResponse<ECommerceModels.LabSample.LabSample>() { Items = result, Count = result.Count });
+                var result = this.labSampleRepository.GetLabSample(request.userId, request.roleName);
+                return ApiResult<ListResponse<LabSample>>
+                    .Success(new ListResponse<LabSample>() { Items = result, Count = result.Count });
             }
             catch (Exception exception)
             {
-                return ApiResult<ListResponse<ECommerceModels.LabSample.LabSample>>.Exception(this.logger.LogException(exception));
+                return ApiResult<ListResponse<LabSample>>.Exception(this.logger.LogException(exception));
+            }
+        }
+
+        [HttpPost]
+        public ApiResult<ListResponse<LabSample>> ViewSamples(LabSampleRequest request)
+        {
+            try
+            {
+                var result = this.labSampleRepository.ViewSamples(request.userId, request.roleName);
+                return ApiResult<ListResponse<LabSample>>
+                    .Success(new ListResponse<LabSample>() { Items = result, Count = result.Count });
+            }
+            catch (Exception exception)
+            {
+                return ApiResult<ListResponse<LabSample>>.Exception(this.logger.LogException(exception));
             }
         }
 
@@ -50,7 +66,7 @@ namespace ECommerceApi.Controllers
         /// <param name="model">the labsample model</param>
         /// <returns>the response where record is added or exception</returns>
         [HttpPost]
-        public ApiResult<string> Add(ECommerceModels.LabSample.LabSample model)
+        public ApiResult<string> Add(LabSample model)
         {
             try
             {
@@ -69,7 +85,7 @@ namespace ECommerceApi.Controllers
         /// <param name="model">the labsample model</param>
         /// <returns>the response where record is updated or not</returns>
         [HttpPost]
-        public ApiResult<string> Update(ECommerceModels.LabSample.LabSample model)
+        public ApiResult<string> Update(LabSample model)
         {
             try
             {

@@ -82,13 +82,11 @@ namespace ECommerceApi.Controllers
         [HttpPost]
         public ApiResult<LoggedInUser> Login(Login login)
         {
-            Exception ex = new Exception("Invalid Username or Password");
-            if (ModelState.IsValid)
+            try
             {
                 string domainName = GetDomainName(login.Username); // Extract domain name form provide DomainUsername e.g Domainname\Username
                 string userName = GetUsername(login.Username);  // Extract user name from provided DomainUsername e.g Domainname\Username
                 IntPtr token = IntPtr.Zero;
-
                 bool valid = LogonUser(userName, domainName, login.Password, 2, 0, ref token);
                 if (valid)
                 {
@@ -97,28 +95,36 @@ namespace ECommerceApi.Controllers
                     {
                         FormsAuthentication.SetAuthCookie(login.Username, false);
                         return ApiResult<LoggedInUser>.Success(user);
-                        // HttpContext.Session.Add(UserStoreProcedures.User_Id_Session, user.User_Id);
                     }
                     else
                     {
-
-                        return ApiResult<LoggedInUser>.Exception(this.logger.LogException(ex));
+                        throw new Exception("Invalid Username or Password");
                     }
                 }
                 else
                 {
-                    return ApiResult<LoggedInUser>.Exception(this.logger.LogException(ex));
+                    throw new Exception("Invalid Username or Password");
                 }
             }
-            else
+            catch (Exception ex)
             {
                 return ApiResult<LoggedInUser>.Exception(this.logger.LogException(ex));
             }
         }
 
-        public void Logout()
+        [HttpPost]
+        public ApiResult<string> Logout()
         {
-            FormsAuthentication.SignOut();
+            try
+            {
+                FormsAuthentication.SignOut();
+                return ApiResult<string>.Success("User Logged Out.");
+            }
+            catch (Exception ex)
+            {
+                return ApiResult<string>.Exception(this.logger.LogException(ex));
+            }
+            
         }
 
         public bool IsUserAuthenticated()
