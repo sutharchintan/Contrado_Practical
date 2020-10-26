@@ -11,3 +11,10 @@ ECommerceApi/ECommerceApi/.vs/ECommerceApi/v15/Server/sqlite3/db.lock
 ECommerceApi/ECommerceApi/.vs/ECommerceApi/v15/Server/sqlite3/storage.ide
 ECommerceApi/ECommerceApi/.vs/ECommerceApi/v15/Server/sqlite3/storage.ide-shm
 ECommerceApi/ECommerceApi/.vs/ECommerceApi/v15/Server/sqlite3/storage.ide-wal
+/LabSampleApi/LabSampleApi/bin
+/LabSampleApi/LabSampleApi/obj
+/LabSampleApi/LabSampleApi/packages
+/LabSampleApi/LabSampleLibrary/bin
+/LabSampleApi/LabSampleLibrary/obj
+/LabSampleApi/LabSampleModels/bin
+/LabSampleApi/LabSampleModels/obj
