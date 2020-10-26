@@ -1,8 +1,21 @@
 import React, { useContext } from 'react';
-import { AppBar, Toolbar, Typography, Paper, Button, Grid } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Paper, Button, Grid, IconButton } from '@material-ui/core';
 import { ThemeContext } from '../../contexts/theme-context';
-import { ComponentRoutes } from '../../enums';
 import { Link } from 'react-router-dom';
+import logoImage from '../../assets/logo.png'
+import headerBgImage from '../../assets/header.jpg';
+import { Person, PowerSettingsNew } from '@material-ui/icons';
+
+
+const styles = {
+    headerBgContainer: {
+        backgroundImage: `url(${headerBgImage})`,
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+    }
+};
+
 
 /**
  * header component
@@ -12,6 +25,12 @@ const Header = () => {
      * the theme context
      */
     const themeContext = useContext(ThemeContext);
+
+    const handleLogout = () => {
+        localStorage.removeItem("LAB_AUTHENTICATED")
+        window.location.href = window.location.host;
+        window.location.reload();
+    }
 
     /**
      * render paper block
@@ -34,30 +53,33 @@ const Header = () => {
      * return the header component elements
      */
     return (
-        <AppBar color="primary">
+        <AppBar color="primary" style={styles.headerBgContainer}>
             <Toolbar>
                 <Grid container>
-                    <Grid item md={3} xs={12}>
+                    <Grid item md={1} xs={2}>
+                        <img src={logoImage} style={{ width: 80, height: 60 }} />
+                    </Grid>
+                    <Grid item md={4} xs={12}>
                         <div>
-                            <Typography variant="h4" style={{ marginTop: 10 }}>
-                                ECommerce Demo
+                            <Typography variant="h4" style={{ marginTop: 10, color: "#fff" }}>
+                                Lab Sample Tracking
                             </Typography>
                         </div>
                     </Grid>
-                    <Grid item md={7} xs={12}>
-                        <Grid container spacing={8}>
-                            <Grid item md={4} xs={12}>
-                                {renderPaperBlock("Products", ComponentRoutes.Products)}
-                            </Grid>
-                            <Grid item md={4} xs={12}>
-                                {renderPaperBlock("Product Categories", ComponentRoutes.ProductCategories)}
-                            </Grid>
-                            <Grid item md={4} xs={12}>
-                                {renderPaperBlock("Product Attributes", ComponentRoutes.ProductAttributes)}
-                            </Grid>
-                        </Grid>
-                    </Grid>
                 </Grid>
+                <IconButton
+                    style={{ float: "right", color: "#fff" }}
+                    onClick={handleLogout}
+                    title="Logout"
+                >
+                    <PowerSettingsNew />
+                </IconButton>
+                <IconButton
+                    style={{ float: "right", color: "#fff" }}
+                    title="Profile"
+                >
+                    <Person />
+                </IconButton>
             </Toolbar>
         </AppBar>
     )

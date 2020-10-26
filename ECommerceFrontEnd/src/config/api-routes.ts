@@ -4,5 +4,7 @@ export const ApiRoutes = {
     Product: baseUrl + "Product/",
     ProductCategory: baseUrl + "ProductCategory/",
     ProductAttributeLookup: baseUrl + "ProductAttributeLookup/",
-    ProductAttribute: baseUrl + "ProductAttribute/"
+    ProductAttribute: baseUrl + "ProductAttribute/",
+    Login: baseUrl + "Login/",
+    LabSample: baseUrl + "LabSample/",
 }

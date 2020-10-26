@@ -29,7 +29,7 @@ const DeleteConfirmation = (props: Props) => {
                 <DialogContent>
                     <FormGroup>
                         <FormLabel>
-                            Are you sure you want to delete this : {props.message} ?
+                            Are you sure you want to delete this record?
                         </FormLabel>
                     </FormGroup>
                 </DialogContent>

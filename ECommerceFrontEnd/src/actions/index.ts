@@ -21,3 +21,13 @@ export { addProductAttrLookup } from "./add-product-attr-lookup";
 export { deleteProductAttrLookup } from "./delete-product-attr-lookup";
 export { getProductAttrLookupData } from "./get-product-att-lookup-data";
 export { updateProductAttrLookup } from "./update-product-attr-lookup";
+
+// login
+export { loginUser } from "./login";
+export { logoutUser } from "./logout";
+
+// samples 
+export { addLabSample } from "./add-sample";
+export { updateLabSample} from "./update-sample";
+export { getViewLabSamples } from "./view-samples";
+export { getLabSamples } from "./get-samples";

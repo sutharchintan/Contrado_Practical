@@ -9,11 +9,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadList: (request) => dispatch(getProducts(request)),
-
-        delete: (id: number) => dispatch(deleteProduct(id)),
-
-        setRecord: (record) => dispatch(setCurrentRecord(record))
+      
     };
 }
 

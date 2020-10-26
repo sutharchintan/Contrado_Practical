@@ -8,7 +8,8 @@ export const tableStyles = theme => ({
       padding: 0
     },
     table: {
-      fontFamily: theme.typography.fontFamily
+      fontFamily: theme.typography.fontFamily,
+      position: "relative"
     },
     tableHead: {
       backgroundColor: theme.palette.grey[200],

@@ -23,6 +23,11 @@ interface Props {
      * children for panel title
      */
     children?: any;
+
+    /**
+     * on add action
+     */
+    onAdd?: any; 
 }
 
 
@@ -39,17 +44,14 @@ const PanelTitle = (props: Props) => {
             }}>
             <Typography
                 variant="subtitle1"
-                color="inherit"
-                style={{ flex: 1 }}>
+                style={{ flex: 1}}>
                 {
                     props.title
                 }
             </Typography>
-            <Link style={{ textDecoration: "none" }} to={props.componentLink} >
-                <Button color="secondary" variant="contained" size="small">
-                    {props.buttonText}
-                </Button>
-            </Link>
+            <Button color="primary" variant="contained" size="small" onClick={props.onAdd}>
+                {props.buttonText}
+            </Button>
         </AccordionSummary>
     )
 }

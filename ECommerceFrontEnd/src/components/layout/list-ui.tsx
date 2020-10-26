@@ -13,7 +13,9 @@ interface Props {
 
     title: string;
 
-    addLink: string;
+    addAction?: any;
+
+    addLink?: string;
 
     columnNames: string[];
 
@@ -91,7 +93,7 @@ const ListUi = (props: Props) => {
     const renderDetails = () => {
         return (
             <AccordionDetails>
-                <Grid container>
+                <Grid container style={{ position: "relative", overflow: "auto" }}>
                     <Table className={props.classes.table}>
                         {
                             renderTableHeader()
@@ -107,22 +109,12 @@ const ListUi = (props: Props) => {
             </AccordionDetails>
         )
     }
-
-    const renderLink = () => {
-        return (
-            <Link id={CommonElements.detail_link} style={{ textDecoration: "none", display: "none" }} to={props.addLink}>
-            </Link>
-        )
-    }
-
+    
     return (
         <Accordion style={{ margin: 0 }} defaultExpanded>
-            <PanelTitle title={props.title} componentLink={props.addLink} buttonText="Add"></PanelTitle>
+            <PanelTitle title={props.title} buttonText="Create New Sample" onAdd={props.addAction}></PanelTitle>
             {
                 renderDetails()
-            }
-            {
-                renderLink()
             }
         </Accordion>
     )

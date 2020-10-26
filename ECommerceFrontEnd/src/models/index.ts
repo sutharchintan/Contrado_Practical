@@ -10,3 +10,4 @@ export { ProductCategoryModel } from "./product/product-category-model";
 export { ProductAttribute } from "./product/product-attribute";
 export { ProductAttributeLookup } from "./product/product-attribute-lookup";
 export { DropDownModel } from "./drop-down-model";
+export { UserModel } from "./user-model";
