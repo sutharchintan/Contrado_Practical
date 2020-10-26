@@ -28,5 +28,7 @@ namespace ECommerceModels.LabSample
         public DateTime QC_Test_Completed_Date { get; set; }//not null
         public string QC_Test_Completed_Time { get; set; }//length 10 and not null
         public string Results { get; set; }//length 50 and null
+        public string CreatedBy { get; set; }
+        public string UpdatedBy { get; set; }
     }
 }

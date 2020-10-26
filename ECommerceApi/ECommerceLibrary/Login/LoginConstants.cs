@@ -11,6 +11,6 @@ namespace ECommerceLibrary.Login
         /// <summary>
         /// constant to get logged in user
         /// </summary>
-        public const string LoggedInUser = "Get_LoogedIn_User";
+        public const string LoggedInUser = "usp_Lab_Sample_Get_LoogedIn_User";
     }
 }

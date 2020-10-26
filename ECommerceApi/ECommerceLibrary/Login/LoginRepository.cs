@@ -15,12 +15,13 @@ namespace ECommerceLibrary.Login
 
         }
 
-        public LoggedInUser GetLoggedInUser(string userCode)
+        public LoggedInUser GetLoggedInUser(string userCode, string password)
         {
             return this.databaseService.RecordList<LoggedInUser>(LoginConstants.LoggedInUser,
             new
             {
                 @UserCode = userCode,
+                @Password = password
             }).FirstOrDefault();
         }
     }

@@ -90,7 +90,7 @@ namespace ECommerceApi.Controllers
                 bool valid = LogonUser(userName, domainName, login.Password, 2, 0, ref token);
                 if (valid)
                 {
-                    var user = this.loginRepository.GetLoggedInUser(userName);
+                    var user = this.loginRepository.GetLoggedInUser(userName, login.Password);
                     if (user != null)
                     {
                         FormsAuthentication.SetAuthCookie(login.Username, false);

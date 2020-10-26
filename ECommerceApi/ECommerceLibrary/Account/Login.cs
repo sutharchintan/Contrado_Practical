@@ -17,5 +17,6 @@ namespace ECommerceLibrary.Account
         public int Lab_Sample_Tracking_User_ID { get; set; }
         public string User_Code { get; set; }
         public int Lab_Sample_Tracking_Role_Id { get; set; }
+        public string Role_Name { get; set; }
     }
 }

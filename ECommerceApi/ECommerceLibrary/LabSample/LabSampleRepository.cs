@@ -39,7 +39,8 @@ namespace ECommerceLibrary.LabSample
                         @Sample_Given_To = labSample.Sample_Given_To,
                         @QC_Test_Completed_Date = labSample.QC_Test_Completed_Date,
                         @QC_Test_Completed_Time = labSample.QC_Test_Completed_Time,
-                        @Results = labSample.Results
+                        @Results = labSample.Results,
+                        @CreatedBy = labSample.CreatedBy
                     });
         }
 
@@ -67,7 +68,8 @@ namespace ECommerceLibrary.LabSample
                         @Sample_Given_To = labSample.Sample_Given_To,
                         @QC_Test_Completed_Date = labSample.QC_Test_Completed_Date,
                         @QC_Test_Completed_Time = labSample.QC_Test_Completed_Time,
-                        @Results = labSample.Results
+                        @Results = labSample.Results,
+                        @UpdatedBy = labSample.UpdatedBy
                     });
         }
 
