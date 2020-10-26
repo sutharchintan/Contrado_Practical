@@ -61,11 +61,6 @@
     <Compile Include="LabSample\LabSampleRepository.cs" />
     <Compile Include="Login\LoginConstants.cs" />
     <Compile Include="Login\LoginRepository.cs" />
-    <Compile Include="Product\ProductAttributeConstants.cs" />
-    <Compile Include="Product\ProductAttributeLookupConstants.cs" />
-    <Compile Include="Product\ProductCategoryConstants.cs" />
-    <Compile Include="Product\ProductConstants.cs" />
-    <Compile Include="Product\ProductRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

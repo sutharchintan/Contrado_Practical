@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { ComponentRoutes, CommonElements } from '../../enums';
 import ListUi from '../layout/list-ui';
-import { ListRequest, ListResponse, ProductModel } from '../../models';
-import { TableRow, TableCell, IconButton, withStyles, Grid, FormControl, FormGroup, FormLabel, Select, Paper, TextField, Button } from '@material-ui/core';
+import { TableRow, TableCell, IconButton, withStyles, Grid, FormControl, FormGroup, FormLabel, Select, TextField, Button, Paper } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
-import { Delete, Edit } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
+import { Delete, Save, Search } from '@material-ui/icons';
 import { NoRecordFound } from '../layout/no-record-found';
 import { tableStyles } from "../../styles/table";
 import DeleteConfirmation from "../layout/delete-confirmation";
+import { getUserDetails } from '../../contexts/user-context';
+import { UserRoles } from '../../enums/user-roles';
+import { SampleModel } from '../../models';
+import moment from "moment";
+import { ProductLines, ProductUnits, ProductsDesc } from '../../enums/product-types';
 
 interface Props {
     classes: any;
+    getSamples: (request: any) => any;
+    viewSamples: (request: any) => any;
+    addSample: (model: any) => void;
+    updateSample: (model: any) => void;
+    onMessage: (message: string) => void;
 }
 
 const ProductList = (props: Props) => {
@@ -20,12 +27,14 @@ const ProductList = (props: Props) => {
         "Date Sample Divered to Lab", "Time Sample Divered to Lab", "Sample Given To", "Date QC Tests Completed", "Time QC Tests Completed", "Actions"
     ];
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<SampleModel[]>([]);
     const [recordCount, setRecordCount] = useState(0);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [openDelete, setOpenDelete] = useState(false);
     const [currentRecord, setRecord] = useState(undefined);
+    const [selectedProduct, setSelectedProduct] = useState(undefined);
+    const userDetails = getUserDetails();
 
     const autoCompleteData = [
         {
@@ -55,100 +64,28 @@ const ProductList = (props: Props) => {
     ]
 
     useEffect(() => {
-        const request = new ListRequest();
-        request.PageNumber = page;
-        request.PageSize = pageSize;
-        loadListData(request);
+        loadListData();
     }, [])
 
-    const loadListData = (request) => {
-        if (page !== request.PageNumber) {
-            setPage(request.PageNumber);
+    const loadListData = async () => {
+        const request = {
+            userId: userDetails.user_id,
+            roleName: userDetails.user_role
+        } as any;
+
+        const productData = getSelectedProductData();
+        if (productData) {
+            request.product_line = productData.Production_Line;
+            request.product_unit = productData.Production_Unit;
+            request.product_desc = productData.Product_Desc;
         }
 
-        if (pageSize !== request.PageSize) {
-            setPageSize(request.PageSize);
-        }
+        let result;
 
-        const sample1 = {
-            id: 1,
-            sample_taken_by: "Bernard",
-            date_sample_taken: "9/17/2020",
-            time_sample_taken: "10:20 AM",
-            sample_type: "normal",
-            sample_status: "taken",
-            sample_delivered_to_lab_by: "Joe Doe",
-            date_sample_delivered_to_lab: "9/17/2020",
-            time_sample_delevered_to_lab: "10:55 AM",
-            sample_given_to: "",
-            date_qc_tests_completed: "",
-            time_qc_tests_completed: ""
-        }
-
-        const sample2 = {
-            id: 2,
-            sample_taken_by: "Bernard",
-            date_sample_taken: "9/17/2020",
-            time_sample_taken: "11:20 AM",
-            sample_type: "recheck",
-            sample_status: "delivered to lab",
-            sample_delivered_to_lab_by: "Joe Doe",
-            date_sample_delivered_to_lab: "9/17/2020",
-            time_sample_delevered_to_lab: "03:55 PM",
-            sample_given_to: "",
-            date_qc_tests_completed: "",
-            time_qc_tests_completed: ""
-        }
-
-        const sample3 = {
-            id: 3,
-            sample_taken_by: "Don Jahnson",
-            date_sample_taken: "9/17/2020",
-            time_sample_taken: "10:45 AM",
-            sample_type: "recheck",
-            sample_status: "partial QC test results",
-            sample_delivered_to_lab_by: "Joe Doe",
-            date_sample_delivered_to_lab: "9/17/2020",
-            time_sample_delevered_to_lab: "11:55 AM",
-            sample_given_to: "",
-            date_qc_tests_completed: "",
-            time_qc_tests_completed: ""
-        }
-
-
-        const sample4 = {
-            id: 4,
-            sample_taken_by: "Glen Mexwell",
-            date_sample_taken: "9/18/2020",
-            time_sample_taken: "10:50 AM",
-            sample_type: "normal",
-            sample_status: "QC test complete",
-            sample_delivered_to_lab_by: "Mathew Cyuprik",
-            date_sample_delivered_to_lab: "9/19/2020",
-            time_sample_delevered_to_lab: "06:55 PM",
-            sample_given_to: "Danger LAB",
-            date_qc_tests_completed: "9/20/2020",
-            time_qc_tests_completed: "10:05 AM"
-        }
-
-        const sample5 = {
-            id: 5,
-            sample_taken_by: "Dan Bekkers",
-            date_sample_taken: "9/28/2020",
-            time_sample_taken: "10:10 AM",
-            sample_type: "na",
-            sample_status: "equiment down",
-            sample_delivered_to_lab_by: "Max Hen",
-            date_sample_delivered_to_lab: "",
-            time_sample_delevered_to_lab: "",
-            sample_given_to: "",
-            date_qc_tests_completed: "",
-            time_qc_tests_completed: ""
-        }
-
-        const result = {
-            Items: [sample1, sample2, sample3, sample4, sample5],
-            Count: 5
+        if (userDetails.user_role === UserRoles.Sample_View) {
+            result = await props.viewSamples(request);
+        } else {
+            result = await props.getSamples(request);
         }
 
         if (result && result.Items && result.Count) {
@@ -157,8 +94,56 @@ const ProductList = (props: Props) => {
         }
     }
 
-    const onEdit = (record) => {
+    const getSelectedProductData = () => {
+        var returnValue;
+        if (selectedProduct) {
+            returnValue = {} as any;
+            const products = selectedProduct.split(",")
+            if (products && products.length) {
+                returnValue.Production_Line = products[0];
+                returnValue.Production_Line_Id = ProductLines.find(p => p.name === products[0].trim()).id;
+                returnValue.Production_Unit = products[1].trim();
+                returnValue.Production_Unit_Id = ProductUnits.find(p => p.name === products[1].trim()).id;
+                returnValue.Product_Desc = products[2].trim();
+                returnValue.Product_Id = ProductsDesc.find(p => p.name === products[2].trim()).id;
+            }
 
+            returnValue.Var_Desc = selectedProduct;
+        }
+
+        return returnValue;
+    }
+
+    const onSaveRecord = async (dataRecord: SampleModel) => {
+        if (dataRecord.is_new) {
+            const sampleRecord = { ...dataRecord };
+            if (selectedProduct) {
+                const productData = getSelectedProductData();
+                if (productData) {
+                    sampleRecord.Production_Line = productData.Production_Line;
+                    sampleRecord.Production_Line_Id = productData.Production_Line_Id
+                    sampleRecord.Production_Unit = productData.Production_Unit;
+                    sampleRecord.Production_Unit_Id = productData.Production_Unit_Id;
+                    sampleRecord.Product_Desc = productData.Product_Desc;
+                    sampleRecord.Product_Id = productData.Product_Id;
+                    sampleRecord.Var_Desc = productData.Var_Desc;
+                }
+            }
+            else {
+                props.onMessage("Please select PL. PU, Prod Description");
+                return;
+            }
+
+            delete sampleRecord.is_new;
+            delete sampleRecord.id;
+            sampleRecord.CreatedBy = userDetails.user_code;
+            sampleRecord.UpdatedBy = userDetails.user_code;
+
+            await props.addSample(sampleRecord);
+        } else {
+            dataRecord.UpdatedBy = userDetails.user_code;
+            await props.updateSample(dataRecord);
+        }
     }
 
     const onCloseDelete = () => {
@@ -184,13 +169,20 @@ const ProductList = (props: Props) => {
         onCloseDelete();
     }
 
+    const onSaveData = async () => {
+        for (let i = 0; i < data.length; i++) {
+            const dataRecord = data[i] as SampleModel;
+            await onSaveRecord(dataRecord);
+        }
+
+        await loadListData();
+    }
+
     const renderEditButton = (dataRecord) => {
         return (
-            <Link style={{ textDecoration: "none" }} to={ComponentRoutes.ProductDetail} >
-                <IconButton onClick={(event) => onEdit(dataRecord)}>
-                    <Edit />
-                </IconButton>
-            </Link>
+            <IconButton color="primary" onClick={(event) => onSaveRecord(dataRecord)}>
+                <Save />
+            </IconButton>
         )
     }
 
@@ -216,69 +208,174 @@ const ProductList = (props: Props) => {
             e.preventDefault();
         }
         const existingData = [...data]
-        existingData.push({ is_new: true, id: new Date().getTime() });
+        existingData.push({ is_new: true, id: new Date().getTime() } as any);
         setData(existingData);
     }
 
+    const onAutoCompleteChange = (e: any) => {
+        if (e && e.currentTarget) {
+            setSelectedProduct(e.currentTarget.textContent);
+        }
+    }
+
+    const onSearch = async () => {
+        if (!selectedProduct) {
+            props.onMessage("Please select PL. PU, Prod Description");
+            return;
+        }
+
+        await loadListData();
+    }
+
     const renderRows = () => {
+        const { classes } = props;
         return data && data.length ?
-            data.map((dataRecord: any, index) =>
-                <TableRow key={index}>
-                    <TableCell>
-                        <TextField value={dataRecord.sample_taken_by} />
-                    </TableCell>
-                    <TableCell>
-                        <TextField type="date" value={dataRecord.date_sample_taken} />
-                    </TableCell>
-                    <TableCell>
-                        <TextField type="time" />
-                    </TableCell>
-                    <TableCell>
-                        <FormLabel style={{ backgroundColor: dataRecord.sample_type === "normal" ? "green" : dataRecord.sample_type === "recheck" ? "yellow" : "", padding: 8 }}>
-                            {dataRecord.sample_type}
-                        </FormLabel>
-                    </TableCell>
-                    <TableCell>
-                        <Select>
-                            <option value="taken">taken</option>
-                            <option value="delivered to lab">delivered to lab</option>
-                            <option value="partial QC test results">partial QC test results</option>
-                            <option value="equipment down">equipment down</option>
-                            <option value="QC test complete">QC test complete</option>
-                            <option value="not taken - late">not taken - late</option>
-                        </Select>
-                    </TableCell>
-                    <TableCell>
-                        <TextField value={dataRecord.sample_delivered_to_lab_by} />
-                    </TableCell>
-                    <TableCell>
-                        <TextField type="date" />
-                    </TableCell>
-                    <TableCell>
-                        <TextField type="time" />
-                    </TableCell>
-                    <TableCell>
-                        <TextField value={dataRecord.sample_given_to} />
-                    </TableCell>
-                    <TableCell>
-                        <TextField type="date" />
-                    </TableCell>
-                    <TableCell>
-                        <TextField type="time" />
-                    </TableCell>
-                    <TableCell>
+            data.map((dataRecord: SampleModel, index) =>
+                <TableRow key={index} className={classes.tableRow}>
+                    <TableCell className={classes.tableCell}>
                         {
-                            renderEditButton(dataRecord)
+                            userDetails.user_role === UserRoles.Sample_Receiver && !dataRecord.Sample_Delivered_To_Lab_By ?
+                                <TextField defaultValue={dataRecord.Sample_Taken_By}
+                                    onChange={(e) => {
+                                        dataRecord.Sample_Taken_By = e.target.value
+                                    }} /> :
+                                <FormLabel>{dataRecord.Sample_Taken_By} </FormLabel>
                         }
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
                         {
-                            dataRecord.is_new && <IconButton onClick={(event) => onOpenDelete(dataRecord)}>
-                                <Delete />
-                            </IconButton>
+                            userDetails.user_role === UserRoles.Sample_Receiver && !dataRecord.Sample_Delivered_To_Lab_By ?
+                                <TextField type="date" defaultValue={dataRecord.Date_Sample_Taken ? moment(dataRecord.Date_Sample_Taken).format("YYYY-MM-DD") : ''}
+                                    onChange={(e) => {
+                                        dataRecord.Date_Sample_Taken = new Date(e.target.value);
+                                    }}
+                                /> :
+                                <FormLabel>{dataRecord.Date_Sample_Taken ? moment(dataRecord.Date_Sample_Taken).format("MM/DD/YYYY") : ''} </FormLabel>
+                        }
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                        {
+                            userDetails.user_role === UserRoles.Sample_Receiver && !dataRecord.Sample_Delivered_To_Lab_By ?
+                                <TextField type="time" defaultValue={dataRecord.Time_Sample_Taken}
+                                    onChange={(e) => {
+                                        dataRecord.Time_Sample_Taken = e.target.value
+                                    }}
+                                />
+                                :
+                                <FormLabel>{dataRecord.Time_Sample_Taken} </FormLabel>
                         }
 
                     </TableCell>
+                    <TableCell className={classes.tableCell}>
+                        {
+                            userDetails.user_role === UserRoles.Sample_Receiver && !dataRecord.Sample_Delivered_To_Lab_By ?
+                                <TextField defaultValue={dataRecord.Sample_Type}
+                                    onChange={(e) => {
+                                        dataRecord.Sample_Type = e.target.value
+                                    }}
+                                />
+                                :
+                                <FormLabel style={{ backgroundColor: dataRecord.Sample_Type === "normal" ? "green" : dataRecord.Sample_Type === "recheck" ? "yellow" : "", padding: 8 }}>
+                                    {dataRecord.Sample_Type}
+                                </FormLabel>
+                        }
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                        {
+                            userDetails.user_role === UserRoles.Sample_Receiver && !dataRecord.Sample_Delivered_To_Lab_By ?
+                                <Select defaultValue={dataRecord.Sample_Status}
+                                    onChange={(e) => {
+                                        dataRecord.Sample_Status = e.target.value as any
+                                    }}
+                                >
+                                    <option value="taken">taken</option>
+                                    <option value="delivered to lab">delivered to lab</option>
+                                    <option value="partial QC test results">partial QC test results</option>
+                                    <option value="equipment down">equipment down</option>
+                                    <option value="QC test complete">QC test complete</option>
+                                    <option value="not taken - late">not taken - late</option>
+                                </Select>
+                                :
+                                <FormLabel>
+                                    {dataRecord.Sample_Status}
+                                </FormLabel>
+                        }
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                        {
+                            userDetails.user_role === UserRoles.Sample_Deliver && !dataRecord.QC_Test_Completed_Date ?
+                                <TextField defaultValue={dataRecord.Sample_Delivered_To_Lab_By}
+                                    onChange={(e) => {
+                                        dataRecord.Sample_Delivered_To_Lab_By = e.target.value
+                                    }}
+                                />
+                                :
+                                <FormLabel>{dataRecord.Sample_Delivered_To_Lab_By} </FormLabel>
+                        }
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                        {
+                            userDetails.user_role === UserRoles.Sample_Deliver && !dataRecord.QC_Test_Completed_Date ?
+                                <TextField type="date" defaultValue={dataRecord.Sample_Delivered_Date_Time ? moment(dataRecord.Sample_Delivered_Date_Time).format("YYYY-MM-DD") : ''}
+                                    onChange={(e) => {
+
+                                        dataRecord.Sample_Delivered_Date_Time = new Date(e.target.value);
+                                    }}
+                                /> :
+                                <FormLabel>{dataRecord.Sample_Delivered_Date_Time ? moment(dataRecord.Sample_Delivered_Date_Time).format("MM/DD/YYYY") : ''} </FormLabel>
+                        }
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                        {
+                            userDetails.user_role === UserRoles.Sample_Deliver && !dataRecord.QC_Test_Completed_Date ?
+                                <TextField type="time" defaultValue={dataRecord.Sample_Delivered_Time}
+                                    onChange={(e) => {
+                                        dataRecord.Sample_Delivered_Time = e.target.value
+                                    }}
+                                />
+                                :
+                                <FormLabel>{dataRecord.Sample_Delivered_Time} </FormLabel>
+                        }
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                        {
+                            userDetails.user_role === UserRoles.Sample_Deliver && !dataRecord.QC_Test_Completed_Date ?
+                                <TextField defaultValue={dataRecord.Sample_Given_To}
+                                    onChange={(e) => {
+                                        dataRecord.Sample_Given_To = e.target.value
+                                    }}
+                                />
+                                :
+                                <FormLabel>{dataRecord.Sample_Given_To} </FormLabel>
+                        }
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                        <FormLabel>{dataRecord.QC_Test_Completed_Date ? moment(dataRecord.QC_Test_Completed_Date).format("MM/DD/YYYY") : ''} </FormLabel>
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                        <FormLabel>{dataRecord.QC_Test_Completed_Time} </FormLabel>
+                    </TableCell>
+                    {
+                        userDetails.user_role !== UserRoles.Sample_View ?
+                            <TableCell className={classes.tableCell}>
+                                {
+                                    renderEditButton(dataRecord)
+                                }
+                                {
+                                    dataRecord.is_new && <IconButton onClick={(event) => onOpenDelete(dataRecord)}>
+                                        <Delete />
+                                    </IconButton>
+                                }
+                            </TableCell> : null
+                    }
                 </TableRow>
             ) : <NoRecordFound colspan={columnNames.length} />
+    }
+
+    const renderSaveButton = () => {
+        return <Button style={{ marginTop: 12, float: "right", right: 10 }} size="large" variant="contained" color="primary" onClick={onSaveData}>
+            Save
+    </Button>
     }
 
     return (
@@ -291,17 +388,21 @@ const ProductList = (props: Props) => {
                                 id="combo-box-demo"
                                 options={autoCompleteData}
                                 getOptionLabel={(option) => option.label}
+                                onChange={onAutoCompleteChange}
                                 renderInput={(params) => <TextField {...params} label="PL. PU, Prod Description" variant="outlined" />}
                             />
+
                         </FormControl>
                     </FormGroup>
                 </Grid>
                 <Grid item md={4}>
+                    <Button style={{ marginTop: 12 }} color="primary" size="large" variant="contained" onClick={onSearch}>
+                        <Search />
+                                 Search
+                            </Button>
                 </Grid>
                 <Grid item md={4}>
-                    <Button style={{ float: "right", right: 10 }} size="large" variant="contained" color="primary">
-                        Save
-                    </Button>
+                    {renderSaveButton()}
                 </Grid>
             </Grid>
             <ListUi
@@ -316,6 +417,14 @@ const ProductList = (props: Props) => {
             {
                 renderDeleteConfirmation()
             }
+
+            <Grid container>
+                <Grid item md={12} xs={12}>
+                    <Paper>
+                        {renderSaveButton()}
+                    </Paper>
+                </Grid>
+            </Grid>
         </div>
     )
 }

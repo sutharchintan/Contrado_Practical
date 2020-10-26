@@ -11,3 +11,4 @@ export { ProductAttribute } from "./product/product-attribute";
 export { ProductAttributeLookup } from "./product/product-attribute-lookup";
 export { DropDownModel } from "./drop-down-model";
 export { UserModel } from "./user-model";
+export { SampleModel } from "./sample-model";

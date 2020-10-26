@@ -11,6 +11,8 @@ export const logoutUser = () => {
             dispatcher(showError(errorMessage));
         }
 
+        sessionStorage.clear();
+        localStorage.clear();
         dispatcher(showLoading(false));
         return result.Data;
     }

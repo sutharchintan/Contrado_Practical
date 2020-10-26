@@ -2,8 +2,12 @@ This project is the demo of ecommerce crud operations.
 
 ## Available Scripts
 
+### `Install Packages`
+Execute command: npm install
+It will install required packages.
+
 ### `Check routing`
-In the project directory, Open "src\config\api-routes.ts" check the api end point, replace with you Ecommerce Api Endpoint.
+In the project directory, Open "src\config\api-routes.ts" check the api end point, replace with you Api Endpoint.
 
 ### `npm start`
 

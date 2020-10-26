@@ -20,14 +20,14 @@ const styles = {
 /**
  * header component
  */
-const Header = () => {
+const Header = (props) => {
     /**
      * the theme context
      */
     const themeContext = useContext(ThemeContext);
 
-    const handleLogout = () => {
-        localStorage.removeItem("LAB_AUTHENTICATED")
+    const handleLogout = async () => {
+        await props.logout();
         window.location.href = window.location.host;
         window.location.reload();
     }

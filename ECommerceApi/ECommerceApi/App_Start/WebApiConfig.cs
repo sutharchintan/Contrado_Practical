@@ -1,7 +1,6 @@
 ﻿using ECommerceLibrary;
 using ECommerceLibrary.Database;
 using ECommerceLibrary.Exceptions;
-using ECommerceLibrary.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +19,6 @@ namespace ECommerceApi
             var container = new UnityContainer();
             container.RegisterType<IDatabaseService, SqlService>();
             container.RegisterType<ILogger, ExceptionLogger>();
-            container.RegisterType<ProductRepository, ProductRepository>();
             config.DependencyResolver = new UnityResolver(container);
 
             // Configure Web API with the dependency resolver.

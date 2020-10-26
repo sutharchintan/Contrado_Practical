@@ -35,7 +35,7 @@ namespace ECommerceApi.Controllers
         {
             try
             {
-                var result = this.labSampleRepository.GetLabSample(request.userId, request.roleName);
+                var result = this.labSampleRepository.GetLabSample(request.userId, request.roleName, request.product_line, request.product_unit, request.product_desc);
                 return ApiResult<ListResponse<LabSample>>
                     .Success(new ListResponse<LabSample>() { Items = result, Count = result.Count });
             }
@@ -50,7 +50,7 @@ namespace ECommerceApi.Controllers
         {
             try
             {
-                var result = this.labSampleRepository.ViewSamples(request.userId, request.roleName);
+                var result = this.labSampleRepository.ViewSamples(request.userId, request.roleName, request.product_line, request.product_unit, request.product_desc);
                 return ApiResult<ListResponse<LabSample>>
                     .Success(new ListResponse<LabSample>() { Items = result, Count = result.Count });
             }

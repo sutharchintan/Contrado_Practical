@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { FormControl, FormGroup, Button, Grid, Select, Paper, TextField, Typography } from '@material-ui/core';
+import { FormControl, FormGroup, Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import { ThemeContext } from '../../contexts/theme-context';
 import { setUserDetails } from "../../contexts/user-context";
@@ -33,19 +33,20 @@ const Login = (props: LoginProps) => {
     const themeContext = useContext(ThemeContext);
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    const [role, setRole] = useState('');
 
     const autoCompleteData = [
         {
-            value: "1",
+            value: UserRoles.Sample_Receiver,
             label: UserRoles.Sample_Receiver
         },
         {
-            value: "2",
+            value: UserRoles.Sample_Deliver,
             label: UserRoles.Sample_Deliver
         }
         ,
         {
-            value: "3",
+            value: UserRoles.Sample_View,
             label: UserRoles.Sample_View
         }
     ]
@@ -63,12 +64,19 @@ const Login = (props: LoginProps) => {
 
         const loginData = await props.onLogin({
             Username: userName,
-            Password: password
+            Password: password,
+            Role: role
         });
 
         if (loginData) {
             setUserDetails(loginData);
             window.location.reload();
+        }
+    }
+
+    const onRoleChange = (e) => {
+        if(e && e.currentTarget) {
+            setRole(e.currentTarget.textContent);
         }
     }
 
@@ -109,6 +117,7 @@ const Login = (props: LoginProps) => {
                                     <Autocomplete
                                         id="combo-box-role"
                                         options={autoCompleteData}
+                                        onChange={onRoleChange}
                                         getOptionLabel={(option) => option.label}
                                         renderInput={(params) => <TextField {...params} label="User Role" variant="outlined" />}
                                     />

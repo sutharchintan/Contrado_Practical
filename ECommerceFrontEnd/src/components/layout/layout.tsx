@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import Header from './header';
+import Header from './header-container';
 import { ThemeContext } from '../../contexts/theme-context';
 import { MuiThemeProvider } from '@material-ui/core';
 import MainContent from './main-content';

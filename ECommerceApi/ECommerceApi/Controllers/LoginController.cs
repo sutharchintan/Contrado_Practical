@@ -90,7 +90,7 @@ namespace ECommerceApi.Controllers
                 bool valid = LogonUser(userName, domainName, login.Password, 2, 0, ref token);
                 if (valid)
                 {
-                    var user = this.loginRepository.GetLoggedInUser(userName, login.Password);
+                    var user = this.loginRepository.GetLoggedInUser(userName, login.Password, login.Role);
                     if (user != null)
                     {
                         FormsAuthentication.SetAuthCookie(login.Username, false);
@@ -98,12 +98,12 @@ namespace ECommerceApi.Controllers
                     }
                     else
                     {
-                        throw new Exception("Invalid Username or Password");
+                        throw new Exception("Invalid Username or Password or Role.");
                     }
                 }
                 else
                 {
-                    throw new Exception("Invalid Username or Password");
+                    throw new Exception("Invalid Username or Password or Role.");
                 }
             }
             catch (Exception ex)

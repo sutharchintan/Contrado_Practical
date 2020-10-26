@@ -73,24 +73,29 @@ namespace ECommerceLibrary.LabSample
                     });
         }
 
-        public List<ECommerceModels.LabSample.LabSample> GetLabSample(int userId, string roleName)
+        public List<ECommerceModels.LabSample.LabSample> GetLabSample(int userId, string roleName, string productLine, string productUnit, string productDesc)
         {
             return this.databaseService.RecordList<ECommerceModels.LabSample.LabSample>(LabSampleConstants.List,
                      new
                      {
                          @UserId = userId,
                          @RoleName = roleName,
-
+                         @Product_Line = string.IsNullOrEmpty(productLine) ? string.Empty : productLine ,
+                         @Product_Unit = string.IsNullOrEmpty(productUnit) ? string.Empty : productUnit,                         
+                         @Product_Desc = string.IsNullOrEmpty(productDesc) ? string.Empty : productDesc
                      });
         }
 
-        public List<ECommerceModels.LabSample.LabSample> ViewSamples(int userId, string roleName)
+        public List<ECommerceModels.LabSample.LabSample> ViewSamples(int userId, string roleName, string productLine, string productUnit, string productDesc)
         {
             return this.databaseService.RecordList<ECommerceModels.LabSample.LabSample>(LabSampleConstants.ViewList,
                      new
                      {
                          @UserId = userId,
                          @RoleName = roleName,
+                         @Product_Line = string.IsNullOrEmpty(productLine) ? string.Empty : productLine,
+                         @Product_Unit = string.IsNullOrEmpty(productUnit) ? string.Empty : productUnit,
+                         @Product_Desc = string.IsNullOrEmpty(productDesc) ? string.Empty : productDesc
                      });
         }
     }

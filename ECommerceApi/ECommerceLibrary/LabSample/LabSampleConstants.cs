@@ -5,7 +5,7 @@
         /// <summary>
         /// constant to get sample list
         /// </summary>
-        public const string List = "usp_Lab_Sample_Traking_Get";
+        public const string List = "usp_Lab_Sample_Traking_List";
         
         /// <summary>
         /// constant to add sample

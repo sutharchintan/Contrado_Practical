@@ -11,5 +11,11 @@ namespace ECommerceModels.LabSample
         public int userId { get; set; }
 
         public string roleName { get; set; } 
+
+        public string product_line { get; set; }
+
+        public string product_unit { get; set; }
+
+        public string product_desc { get; set; }
     }
 }

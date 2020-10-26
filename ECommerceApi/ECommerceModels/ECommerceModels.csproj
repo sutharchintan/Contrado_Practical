@@ -49,10 +49,6 @@
     <Compile Include="LabSample\LabSampleRequest.cs" />
     <Compile Include="ListRequest.cs" />
     <Compile Include="ListResponse.cs" />
-    <Compile Include="Product\Product.cs" />
-    <Compile Include="Product\ProductAttribute.cs" />
-    <Compile Include="Product\ProductAttributeLookup.cs" />
-    <Compile Include="Product\ProductCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

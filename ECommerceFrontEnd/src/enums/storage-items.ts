@@ -2,4 +2,5 @@ export const StorageItems = {
     LAB_AUTHENTICATED: "LAB_AUTHENTICATED",
     LAB_USER_ROLE: "LAB_USER_ROLE",
     LAB_USER_ID: "LAB_USER_ID",
+    LAB_USER_CODE: "LAB_USER_CODE"
 }

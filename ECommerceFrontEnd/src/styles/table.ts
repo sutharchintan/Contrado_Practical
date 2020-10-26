@@ -12,7 +12,39 @@ export const tableStyles = theme => ({
       position: "relative"
     },
     tableHead: {
+      fontWeight: "bold",
+      borderRight: "1px solid silver",
       backgroundColor: theme.palette.grey[200],
+      paddingLeft: 4,
+      paddingRight: 4,
+      "&:hover": {
+        cursor: "pointer"
+      }
+    },
+    tableHeadReceiver: {
+      fontWeight: "bold",
+      borderRight: "1px solid silver",
+      backgroundColor: "yellow",
+      paddingLeft: 4,
+      paddingRight: 4,
+      "&:hover": {
+        cursor: "pointer"
+      }
+    },
+    tableHeadDeliver: {
+      fontWeight: "bold",
+      borderRight: "1px solid silver",
+      backgroundColor: 'orange',
+      paddingLeft: 4,
+      paddingRight: 4,
+      "&:hover": {
+        cursor: "pointer"
+      }
+    },
+    tableHeadCompleted: {
+      fontWeight: "bold",
+      borderRight: "1px solid silver",
+      backgroundColor: 'lime',
       paddingLeft: 4,
       paddingRight: 4,
       "&:hover": {
@@ -31,7 +63,10 @@ export const tableStyles = theme => ({
       boxSizing: "border-box"
     },
     tableRow: {
-      cursor: "pointer"
+      cursor: "pointer",
+      "&:hover": {
+        backgroundColor: theme.palette.grey[200]
+      }
     },
     tableRowHover: {
       "&:hover": {
@@ -39,6 +74,7 @@ export const tableStyles = theme => ({
       }
     },
     tableCell: {
+      borderRight: "1px solid silver",
       flex: 1,
       paddingTop: 2,
       paddingBottom: 2,
